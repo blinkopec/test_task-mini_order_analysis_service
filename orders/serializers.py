@@ -31,7 +31,7 @@ class OrderSerializer(serializers.ModelSerializer):
         order, created = Order.objects.update_or_create(
             order_number=validated_data["order_number"],
             defaults=validated_data
-        )
+        
 
         # Обновляем позиции
         order.items.all().delete()
@@ -40,16 +40,3 @@ class OrderSerializer(serializers.ModelSerializer):
 
         return order
 
-    def update(self, instance, validated_data):
-        items = validated_data.pop('items', [])
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-
-        # обновляем позиции
-        instance.items.all().delete()
-        for item in items:
-            OrderItem.objects.create(order=instance, **item)
-
-        return instance

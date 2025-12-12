@@ -31,7 +31,7 @@ class OrderSerializer(serializers.ModelSerializer):
         order, created = Order.objects.update_or_create(
             order_number=validated_data["order_number"],
             defaults=validated_data
-        
+        )
 
         # Обновляем позиции
         order.items.all().delete()
